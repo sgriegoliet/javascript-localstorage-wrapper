@@ -161,12 +161,18 @@ utils.storage = {
        return false;
      }
      try{
+       var namespaceKeys = [];
        for(i = 0; i < localStorage.length; i++){
          // Test if the current key is in the namespace
          testKey = localStorage.key(i).substring(0,this._namespace - 1);
          if(testKey == this._namespace){
-           this.remove(testKey);
+           namespaceKeys.push(testKey);
          }
+       }
+       // remove after all keys have been found otherwise as key-pairs get removed 
+       // localStorage's indices fall out of sync with the iteration
+       for(i=0; i < namespaceKeys.length; i++){
+           this.remove(testKey);
        }
      }catch(e){
        return false;
